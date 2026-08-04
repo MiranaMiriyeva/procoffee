@@ -7,11 +7,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatPrice(price: number | string) {
   const value = typeof price === "string" ? Number(price) : price;
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format(value);
+  if (!Number.isFinite(value)) return "";
+  return `${value.toFixed(2)} ₼`;
 }
 
 export function slugify(input: string) {
