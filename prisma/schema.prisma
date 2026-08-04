@@ -1,0 +1,63 @@
+// Procoffee — Prisma schema
+// Uses Supabase (PostgreSQL) via the pooler URL at runtime,
+// and the direct URL for migrations (see .env.example).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  name         String
+  nameAz       String?
+  nameRu       String?
+  slug         String   @unique
+  displayOrder Int      @default(0)
+  items        Item[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([displayOrder])
+}
+
+model Item {
+  id             String   @id @default(cuid())
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  title          String
+  titleAz        String?
+  titleRu        String?
+  subtitle       String?
+  subtitleAz     String?
+  subtitleRu     String?
+  description    String?
+  descriptionAz  String?
+  descriptionRu  String?
+  price          Decimal  @db.Decimal(10, 2)
+  imageUrl       String?
+  available      Boolean  @default(true)
+  displayOrder   Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([categoryId, displayOrder])
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
