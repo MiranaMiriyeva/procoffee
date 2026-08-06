@@ -5,6 +5,7 @@ import { auth, signIn } from "@/auth";
 import { loginSchema } from "@/lib/validators";
 import { AuthError } from "next-auth";
 import { getSettings } from "@/lib/settings";
+import { PasswordInput } from "./PasswordInput";
 
 export const metadata = { title: "Sign in" };
 
@@ -85,13 +86,11 @@ export default async function LoginPage({
             <label htmlFor="password" className="block text-sm font-medium mb-1">
               Password
             </label>
-            <input
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               autoComplete="current-password"
               required
-              className="w-full h-11 rounded-lg border border-input bg-background px-3 text-base outline-none focus:ring-2 focus:ring-ring focus:border-ring"
             />
           </div>
 
